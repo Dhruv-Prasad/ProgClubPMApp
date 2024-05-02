@@ -64,7 +64,8 @@ void send_msg(int chosen, char *song_names[],int client_socket)
 	}
 	char msg[4096];
 	ssize_t bytes_read, bytes_sent;
-	// Read the file in packets of 4096 bytes each and send it to client
+	// Read the file in packets of 4096 bytes each and send it to client 
+	//4096 because thats how much the client accepts at a time, it wors with size larger than 4096 bytes too
 	while ((bytes_read = fread(msg, 1, 4096, fp)) > 0)
 	{
 		if((bytes_sent=send(client_socket, msg, bytes_read, 0))==-1)

@@ -29,7 +29,7 @@ void initialize_0matrix(long long int *mptr, long long int N)
 	}
 }
 
-// Function to print out an NxN matrix
+// Function to print out an NxN matrix in a file
 void fprint_matrix(long long int *mptr, long long int N, FILE *fptr)
 {
 	for(long long int i=0; i<(N*N); i++)

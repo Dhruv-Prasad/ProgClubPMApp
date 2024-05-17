@@ -110,8 +110,8 @@ int main(int argc, char *argv[])
 	int N_square = N*N;
 	
 	// Decide how many threads to create
-	// My scomputer can run 8 threads concurrently at max, so I will create 8 threads at max
-	// 16 and 32 threads didn't give me any boost anyways
+	// My scomputer can run 8 threads concurrently at max, so I will create 7 threads at max as 1 is the main thread
+	// 8, 16 and 32 threads didn't give me any boost anyways
 	int num_of_threads = fmin(N_square, 8);
 
 	// Generate two random matrices of size N x N

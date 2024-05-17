@@ -7,8 +7,8 @@
 #include <time.h>
 
 // Decide how many threads to create
-// My computer can run 8 threads concurrently at max, so I will create 8 threads at max
-#define num_of_threads 8
+// My computer can run 8 threads concurrently at max, so I will create 7 threads at max as 1 is the main calling thread
+#define num_of_threads 7
 
 // Global variables used by queue related functions
 queue q; // Task queue

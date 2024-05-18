@@ -9,6 +9,7 @@
 // Decide how many threads to create
 // My computer can run 8 threads concurrently at max, so I will create 7 threads at max as 1 is the main calling thread
 #define num_of_threads 7
+#define minimum_task_size 128
 
 // Global variables used by queue related functions
 queue q; // Task queue
@@ -140,7 +141,7 @@ int main(int argc, char *argv[])
 
     // Decide number of parts to break the ans matrix into
     long long int num_of_structs;
-    num_of_structs=fmin(N_square,fmax(num_of_threads,(N_square/128)));
+    num_of_structs=fmin(N_square,fmax(num_of_threads,(N_square/minimum_task_size)));
     
 	// Start clock to measure run time for multiplication of the matrices
 	clock_t start = clock();

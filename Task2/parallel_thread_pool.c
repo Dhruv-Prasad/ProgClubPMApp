@@ -130,6 +130,9 @@ int main(int argc, char *argv[])
 	long long int N = atoi(argv[1]);
 	long long int N_square = N*N;
 
+	// Set seed using current time
+	srand(time(NULL));
+	
 	// Generate two random matrices of size N x N
 	// Generate 0 matrix of size N x N to store ans
 	long long int *m1ptr = malloc(N_square*sizeof(long long int));

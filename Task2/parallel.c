@@ -108,6 +108,9 @@ int main(int argc, char *argv[])
 	}
 	int N = atoi(argv[1]);
 	int N_square = N*N;
+
+	// Set seed using current time
+	srand(time(NULL));
 	
 	// Decide how many threads to create
 	// My scomputer can run 8 threads concurrently at max, so I will create 7 threads at max as 1 is the main thread

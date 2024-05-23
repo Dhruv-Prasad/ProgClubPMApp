@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <math.h>
-#include <time.h>
+#include <sys/time.h>
 
 // Struct to store arguments for multiplication
 // I need this because pthread_create only takes one argument for input to a function
@@ -137,7 +137,8 @@ int main(int argc, char *argv[])
 	}
 
 	// Start clock to measure run time for multiplication of the matrices
-	clock_t start = clock();
+	struct timeval start, end;
+	gettimeofday(&start, NULL);
 
 	// Create the threads and evaluate num_of_threads parts of ans matrix in parallel
 	pthread_t threadId[num_of_threads];
@@ -163,7 +164,7 @@ int main(int argc, char *argv[])
     }
 
 	// End clock
-	clock_t end = clock();
+	gettimeofday(&end, NULL);
 
 	// Store the two random matrices and product matrix in a file for verification of result
 	// Skip if size > 1000 as it takes up time
@@ -185,7 +186,7 @@ int main(int argc, char *argv[])
 	free(ansptr);
 
 	// Calculate run time
-	double t = ((double)(end - start)*1000) / CLOCKS_PER_SEC;
+	double t = (double)((end.tv_usec - start.tv_usec)/1000) + (double)((end.tv_sec - start.tv_sec)*1000);
 
 	// Print run time
 	printf("Multiplication time is %lf ms\n", t);

@@ -1,7 +1,7 @@
 // C program to multiply two matrices serially
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <sys/time.h>
 
 // Function to generate a random single digit
 int single_digit_rand()
@@ -92,9 +92,10 @@ int main(int argc, char *argv[])
 	initialize_0matrix(ansptr, N);
 
 	// Start clock to measure CPU run time of matrix multiplication, do the multiplication, end the clock
-	clock_t start = clock();
+	struct timeval start, end;
+	gettimeofday(&start, NULL);
 	multiply_matrix_serial(m1ptr, m2ptr, ansptr, N);
-	clock_t end = clock();
+	gettimeofday(&end, NULL);
 
 	// Store the two random matrices and product matrix in a file for verification of result
 	// Skip if size > 1000 as it takes up time
@@ -116,7 +117,7 @@ int main(int argc, char *argv[])
 	free(ansptr);
 
 	// Calculate run time
-	double t = ((double)(end - start)*1000) / CLOCKS_PER_SEC;
+	double t = (double)((end.tv_usec - start.tv_usec)/1000) + (double)((end.tv_sec - start.tv_sec)*1000);
 
 	// Print run time
 	printf("Multiplication time is %lf ms\n", t);

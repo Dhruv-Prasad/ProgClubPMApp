@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <math.h>
-#include <time.h>
+#include <sys/time.h>
 
 // Decide how many threads to create
 // My computer can run 8 threads concurrently at max, so I will create 7 threads at max as 1 is the main calling thread
@@ -142,14 +142,15 @@ int main(int argc, char *argv[])
 	initialize_random_matrix(m2ptr, N);
 	initialize_0matrix(ansptr, N);	
 
-    // Decide number of parts to break the ans matrix into
-    long long int num_of_structs;
-    num_of_structs=fmin(N_square,fmax(num_of_threads,(N_square/minimum_task_size)));
+	// Decide number of parts to break the ans matrix into
+    	long long int num_of_structs;
+   	 num_of_structs=fmin(N_square,fmax(num_of_threads,(N_square/minimum_task_size)));
     
 	// Start clock to measure run time for multiplication of the matrices
-	clock_t start = clock();
+	struct timeval start, end;
+	gettimeofday(&start, NULL);
 
-    // Initialize the queue and put all the tasks in it
+    	// Initialize the queue and put all the tasks in it
 	queue_initialize(&q);
 	for(long long int i = 0; i<(num_of_structs-1); i++)
 	{
@@ -161,7 +162,7 @@ int main(int argc, char *argv[])
 		to_be_added->N = N;
 		to_be_added->start = (i*(N_square/num_of_structs));
 		to_be_added->end = (((i+1)*(N_square/num_of_structs))-1);
-        queue_add(&q, to_be_added); // Add the task to the queue and then free the copy
+        	queue_add(&q, to_be_added); // Add the task to the queue and then free the copy
 		free(to_be_added);
 	}
 	// I had to evaluate the last part separately to cover the entire ans matrix
@@ -172,7 +173,7 @@ int main(int argc, char *argv[])
 	to_be_added->N = N;
 	to_be_added->start=(((num_of_structs-1)*(N_square/num_of_structs)));
 	to_be_added->end=((N_square)-1);
-    queue_add(&q, to_be_added);
+    	queue_add(&q, to_be_added);
 	free(to_be_added);
 
 	pthread_mutex_init(&mutex_queue, NULL); // Initialize the mutex to be used by thread_wait function
@@ -191,7 +192,7 @@ int main(int argc, char *argv[])
     }
 
 	// End clock
-	clock_t end = clock();
+	gettimeofday(&end, NULL);
 
 	// Store the two random matrices and product matrix in a file for verification of result
 	// Skip if size > 1000 as it takes up time
@@ -214,7 +215,7 @@ int main(int argc, char *argv[])
     pthread_mutex_destroy(&mutex_queue);
 
 	// Calculate run time
-	double t = ((double)(end - start)*1000) / CLOCKS_PER_SEC;
+	double t = (double)((end.tv_usec - start.tv_usec)/1000) + (double)((end.tv_sec - start.tv_sec)*1000);
 
 	// Print run time
 	printf("Multiplication time is %lf ms\n", t);

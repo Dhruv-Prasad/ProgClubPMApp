@@ -12,6 +12,7 @@
 
 #define BUFFER_SIZE 1024
 #define MAX_SONGS 3
+#define num_of_threads 7
 
 // Struct to store arguments of send_msg function which needs to be passed to the threads
 typedef struct thread_args
@@ -130,8 +131,8 @@ int main(int argc, char*argv[])
 	char *song_names[3];
 	get_mp3_path_list(song_names, directory);
 	
-	// Initialising 7 thread ids and index to track threads
-	pthread_t thread_id[7];
+	// Initialising num_of_threads (7) thread ids and index to track threads
+	pthread_t thread_id[num_of_threads];
 	int thread_index = 0;
 	
 	// Initialising the buffer and the client and server sockets, sizes and addresses
@@ -200,7 +201,7 @@ int main(int argc, char*argv[])
 			thread_index++;
 		}
 		
-		thread_index = (thread_index + 1) % 7;
+		thread_index = (thread_index + 1) % num_of_threads;
 		continue;
 	}
 	
